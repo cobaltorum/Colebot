@@ -64,7 +64,7 @@ export default class Eval extends Command {
 		};
 	}
 
-	override async executeInteraction(interaction: ChatInputCommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		if (process.env.DEVELOPER_ID !== interaction.user.id) {
 			return interaction.reply({
 				content: `Only the bot's maintainer can use this command.`

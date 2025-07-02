@@ -106,7 +106,7 @@ export default class Snippet extends Command {
 		};
 	}
 
-	override async executeInteraction(interaction: ChatInputCommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const subcommand = interaction.options.getSubcommand(true) as SnippetSubcommand;
 
 		switch (subcommand) {

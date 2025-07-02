@@ -54,7 +54,7 @@ export default class UserInfo extends Command {
 		};
 	}
 
-	override async executeInteraction(interaction: ChatInputCommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const rawTarget = interaction.options.getUser("target", false) ?? interaction.user;
 
 		const target = await rawTarget.fetch(true);

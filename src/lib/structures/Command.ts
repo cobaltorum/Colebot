@@ -74,7 +74,7 @@ export default abstract class Command {
 	 * @param interaction The interaction that triggered the command.
 	 */
 
-	public executeInteraction?(interaction: CommandInteraction): Awaitable<unknown>;
+	abstract execute(interaction: CommandInteraction): Awaitable<unknown>;
 }
 
 /**

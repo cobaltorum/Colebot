@@ -24,7 +24,7 @@ export default class UserInfoCtx extends Command {
 		};
 	}
 
-	override async executeInteraction(interaction: UserContextMenuCommandInteraction) {
+	async execute(interaction: UserContextMenuCommandInteraction) {
 		const target = await interaction.targetUser.fetch();
 		const targetMember = interaction.inCachedGuild()
 			? await interaction.guild.members.fetch(target.id).catch(() => null)

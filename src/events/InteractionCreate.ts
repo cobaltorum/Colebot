@@ -45,20 +45,9 @@ export default class InteractionCreate extends EventListener {
 			}, 7500);
 		}
 
-		if (data instanceof Command && !data.executeInteraction) {
-			await interaction.reply({
-				content: `This command cannot be executed.`,
-				flags: MessageFlags.Ephemeral
-			});
-
-			return setTimeout(() => {
-				interaction.deleteReply().catch(() => null);
-			}, 7500);
-		}
-
 		try {
 			if (interaction.isCommand()) {
-				await (data as Command).executeInteraction!(interaction);
+				await (data as Command).execute(interaction);
 			} else {
 				await (data as Component).execute(interaction);
 			}

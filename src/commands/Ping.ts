@@ -32,7 +32,7 @@ export default class Ping extends Command {
 		};
 	}
 
-	override async executeInteraction(interaction: ChatInputCommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const start = performance.now();
 		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 		const end = performance.now();

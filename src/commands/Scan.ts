@@ -48,7 +48,7 @@ export default class Scan extends Command {
 		};
 	}
 
-	override async executeInteraction(interaction: ChatInputCommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		const apiKey = process.env.VIRUSTOTAL_API_KEY;
 
 		if (!apiKey) {
