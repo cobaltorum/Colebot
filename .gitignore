@@ -1,0 +1,10 @@
+# Folders
+/.git
+/dist
+/node_modules
+/.fleet
+/.idea
+/.vscode
+
+# Files
+/.env

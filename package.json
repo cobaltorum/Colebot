@@ -1,0 +1,44 @@
+{
+  "name": "discord-bot-template",
+  "version": "0.0.1",
+  "description": "A starting template to help you build Discord bots.",
+  "main": "dist/index.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coledotjs/discord-bot-template.git"
+  },
+  "keywords": [
+    "Discord",
+    "Discord-Bot",
+    "Discord-Bot-Template"
+  ],
+  "author": {
+    "name": "coledotjs",
+    "url": "https://github.com/coledotjs"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/coledotjs/discord-bot-template/issues"
+  },
+  "homepage": "https://github.com/coledotjs/discord-bot-template#readme",
+  "scripts": {
+    "start": "node --no-deprecation dist/index.js",
+    "compile": "tsc && tsc-alias",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "dependencies": {
+    "@sapphire/discord-utilities": "^3.5.0",
+    "@sapphire/discord.js-utilities": "^7.3.3",
+    "@sapphire/lexure": "^1.1.10",
+    "@sapphire/result": "^2.7.2",
+    "discord.js": "^14.20.0",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.4",
+    "prettier": "^3.6.1",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3"
+  }
+}

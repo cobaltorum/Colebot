@@ -1,0 +1,17 @@
+# Folders
+/.git
+/dist
+/node_modules
+/.fleet
+/.idea
+/.vscode
+
+# Files
+/.prettierignore
+/.prettierrc.yml
+/Dockerfile
+/.dockerignore
+/.gitignore
+/LICENSE
+/package.json
+/.env
