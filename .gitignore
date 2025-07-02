@@ -5,6 +5,7 @@
 /.fleet
 /.idea
 /.vscode
+/data
 
 # Files
 /.env

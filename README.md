@@ -1,47 +1,40 @@
-# Discord Bot TypeScript Template
+# Cole Bot
 
-A simple, plug-and-play template designed for building Discord bots using TypeScript and Discord.js.
-
-## Why Use This Template?
-
-When I started building my own Discord bots, I found there weren’t many solid starter templates out there. This project addresses that gap by providing a clean, well-organized foundation. With this template, you can focus on writing your bot’s logic instead of spending time on setting up your project structure.
-
-# Development
-
-For detailed instructions on how to extend the template and follow best practices, refer to [`the full development documentation`](./documentation/Development.md).
+**Cole Bot** is a personal Discord bot with various utility tools. It was originally built for my own use, but I figured why not publish the source here on GitHub? Maybe it’ll help someone, or at the very least, it won’t hurt.
 
 # Deployment
 
-## Prerequisites
+This project is deployed using Docker and Docker Compose because containerization is awesome.
+I’m not going to walk you through every step, but since you’re here, you probably already know how to handle that. If not, the `docker-compose.yml` file should give you a pretty good idea.
 
--   `.env` file in the root directory with the necessary variables (see [`/.env.example`](.env.example)).
--   `docker` & `docker compose` installed on your machine.
+> [!TIP]
+> Use the `docker compose -p "" up -d` to start all containers. Keep in mind you'll need to have configured the required environment variables for everything to work. I have provided [an example file](/.env.example) to help you.
 
-> [!NOTE]
-> This template has been tested for deployment in a Unix/Linux based environment. Additionally, you'll need to tailor the `docker-compose.yml` file to your needs depending on what you decide to add to the bot, and you'll need to learn how to use properly docker/docker compose if you don't already know.
+# Contributing
 
-## Docker Commands
+Whether it’s fixing a bug, suggesting improvements, or adding new features, your help is always welcome.
 
-### Starting the bot
+## How to Contribute:
 
-```bash
-sudo docker compose -p "" up -d
-```
+1. **Write Quality Code:** Keep it clean, readable, and in line with the project’s conventions. Clear comments are always appreciated.
+2. **Use Prettier:** Format your code through the `format` command.
+3. **Test Thoroughly:** Make sure your changes work well and don’t break existing functionality.
+4. **Stay On Track:** Keep your contributions aligned with the bot's purpose and goals to maintain focus.
 
-### Shutting down the bot
+## What You Can Contribute:
 
-```bash
-sudo docker compose down
-```
+1. Fix bugs or address reported issues.
+2. Enhance existing features or improve code quality.
+3. Add new features that align with the bot's goals (smaller, focused additions are best).
 
-### Restarting the bot
+## Things to Avoid:
 
-```bash
-sudo docker compose restart
-```
+1. **Code Formatting:** No need to format manually; we use [Prettier](https://www.npmjs.com/package/prettier) for that.
+2. **Typos:** While pointing out typos is great, please create an issue or let me know directly instead of making a pull request.
+3. **Micro-optimizations:** Focus on meaningful improvements rather than tiny tweaks that don’t add much value.
 
-### Rebuilding the bot
+Thanks!
 
-```
-sudo docker compose build
-```
+# Licensing
+
+This project is licensed under the **Apache 2.0 License**, meaning you can do pretty much anything you want. If you want to get into the specifics though, have a look at the [LICENSE](/LICENSE) file.

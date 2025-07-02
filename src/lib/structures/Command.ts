@@ -1,9 +1,6 @@
-import { ArgumentStream, IUnorderedStrategy, Lexer, Parser } from "@sapphire/lexure";
-import { ApplicationCommandData, Awaitable, CommandInteraction, Message } from "discord.js";
+import { ApplicationCommandData, Awaitable, CommandInteraction } from "discord.js";
 
-import { Args as ArgsC } from "./Args.js";
 import { client } from "@/index.js";
-import { FlagStrategy } from "./FlagStrategy.js";
 
 export default abstract class Command {
 	/**
@@ -47,25 +44,13 @@ export default abstract class Command {
 	public data: ApplicationCommandData | null;
 
 	/**
-	 * The lexer to be used by the command.
-	 */
-
-	private lexer: Lexer;
-
-	/**
-	 * The strategy to be used by the argument parser.
-	 */
-
-	private readonly strategy: IUnorderedStrategy;
-
-	/**
 	 * Constructs a new command.
 	 *
 	 * @param options The options for the command.
 	 */
 
 	public constructor(options: CommandOptions) {
-		const { name, aliases, description, category, flags } = options;
+		const { name, aliases, description, category } = options;
 
 		this.name = name;
 		this.aliases = aliases ?? [];
@@ -74,9 +59,6 @@ export default abstract class Command {
 
 		// Initially set to null.
 		this.data = null;
-
-		this.lexer = new Lexer({ quotes: [] });
-		this.strategy = new FlagStrategy(Command._getStrategyOptions(flags ?? []));
 	}
 
 	/**
@@ -93,47 +75,6 @@ export default abstract class Command {
 	 */
 
 	public executeInteraction?(interaction: CommandInteraction): Awaitable<unknown>;
-
-	/**
-	 * Handler that is called when the command is executed as a message command.
-	 *
-	 * @param message The message that triggered the command.
-	 * @param args The argument parser for the command.
-	 */
-
-	public executeMessage?(message: Message<true>, args: ArgsC): Awaitable<unknown>;
-
-	/**
-	 * Get the argument handler for the command.
-	 * This is used to parse the arguments passed to the command.
-	 *
-	 * @param message The message that triggered the command.
-	 * @param parameters The parameters passed to the command.
-	 */
-
-	public getArgsClass(message: Message<true>, parameters: string) {
-		const parser = new Parser(this.strategy);
-		const stream = new ArgumentStream(parser.run(this.lexer.run(parameters)));
-		return new ArgsC(message, stream);
-	}
-
-	/**
-	 * Parses the flags array passed to the command and returns the flags and options.
-	 *
-	 * @param _flags The flags to parse.
-	 * @returns An object containing the flags and options.
-	 */
-
-	private static _getStrategyOptions(flags: FlagsArray): { flags: string[]; options: string[] } {
-		return flags.reduce<{ flags: string[]; options: string[] }>(
-			(acc, flag) => {
-				const destination = flag.acceptsValue ? acc.options : acc.flags;
-				destination.push(...flag.keys);
-				return acc;
-			},
-			{ flags: [], options: [] }
-		);
-	}
 }
 
 /**
@@ -190,16 +131,4 @@ export type CommandOptions = {
 	 * Useful for documentation and help commands, but required for all commands.
 	 */
 	category: keyof typeof CommandCategory;
-
-	/**
-	 * The flags to pass onto the lexer.
-	 * These are used to determine which flags are available to the argument parser.
-	 *
-	 * Flags are typically used for options that do not require a value, such as `--verbose` or `--force`.
-	 * However, they can also be used for options that do require a value, such as `--port=8080`.
-	 */
-
-	flags?: FlagsArray;
 };
-
-type FlagsArray = { keys: string[]; acceptsValue: boolean }[];

@@ -1,6 +1,8 @@
 import "dotenv/config.js";
 
 import { sleep } from "@utils/index.js";
+import { open } from "lmdb";
+import { join } from "path";
 
 import Logger from "@utils/Logger.js";
 import CustomClient from "@structures/Client.js";
@@ -12,6 +14,15 @@ import EventListenerManager from "@managers/client/EventListenerManager.js";
  * The main client instance.
  */
 export const client = new CustomClient();
+
+/**
+ * The main LMDB database client instance.
+ */
+
+export const lmdb = open<string, string>(join(process.cwd(), "data"), {
+	compression: true,
+	encoding: "string"
+});
 
 async function main(): Promise<void> {
 	/**
@@ -25,10 +36,6 @@ async function main(): Promise<void> {
 
 	if (!process.env.BOT_ID) {
 		throw new Error("Missing BOT_ID environment variable.");
-	}
-
-	if (!process.env.DEFAULT_PREFIX) {
-		throw new Error("Missing DEFAULT_PREFIX environment variable.");
 	}
 
 	if (!process.env.DEVELOPER_ID) {

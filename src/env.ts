@@ -1,8 +1,8 @@
 type Env = {
 	BOT_TOKEN: string;
 	BOT_ID: string;
-	DEFAULT_PREFIX: string;
 	DEVELOPER_ID: string;
+	VIRUSTOTAL_API_KEY: string | undefined;
 };
 
 declare global {
