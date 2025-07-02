@@ -65,7 +65,7 @@ export default class Logger {
 	 */
 
 	static success(...values: readonly unknown[]): void {
-		this._log(LogLevel.Success, LogColor.Green, ...values);
+		this._log(LogLevel.Success, ...values);
 	}
 
 	/**

@@ -4,8 +4,6 @@ import Logger from "@utils/Logger.js";
 import Command from "@structures/Command.js";
 import Component from "@structures/Component.js";
 import EventListener from "@structures/EventListener.js";
-import CommandManager from "@managers/client/CommandManager.js";
-import ComponentManager from "@managers/client/ComponentManager.js";
 
 export default class InteractionCreate extends EventListener {
 	constructor() {
@@ -29,8 +27,8 @@ export default class InteractionCreate extends EventListener {
 		}
 
 		const data = interaction.isCommand()
-			? CommandManager.get(interaction.commandName)
-			: ComponentManager.get(interaction.customId);
+			? this.client.getCommand(interaction.commandName)
+			: this.client.getComponent(interaction.customId);
 
 		if (!data) {
 			const type = interaction.isCommand() ? "Command" : "Component";

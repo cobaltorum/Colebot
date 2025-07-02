@@ -5,15 +5,12 @@ import { open } from "lmdb";
 import { join } from "path";
 
 import Logger from "@utils/Logger.js";
-import CustomClient from "@structures/Client.js";
-import CommandManager from "@managers/client/CommandManager.js";
-import ComponentManager from "@managers/client/ComponentManager.js";
-import EventListenerManager from "@managers/client/EventListenerManager.js";
+import ColebotClient from "@structures/Client.js";
 
 /**
  * The main client instance.
  */
-export const client = new CustomClient();
+export const client = new ColebotClient();
 
 /**
  * The main LMDB database client instance.
@@ -42,21 +39,15 @@ async function main(): Promise<void> {
 		throw new Error("Missing DEVELOPER_ID environment variable.");
 	}
 
-	// Cache all commands.
-	await CommandManager.cache();
-
-	// Cache all components.
-	await ComponentManager.cache();
-
-	// Mount all event listeners.
-	await EventListenerManager.mount();
+	// Load all modules.
+	await client.loadModules();
 
 	// Login to Discord.
 	await client.login(process.env.BOT_TOKEN);
 
 	// Wait 2 seconds then publish all commands.
 	await sleep(2000);
-	await CommandManager.publish();
+	await client.publish();
 }
 
 if (process.env.NODE_ENV !== "test") {
