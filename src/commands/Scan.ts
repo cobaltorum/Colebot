@@ -94,15 +94,18 @@ export default class Scan extends Command {
 		const stats = data.last_analysis_stats;
 
 		const status =
-			stats.malicious > 0 ? `**Malicious URL**` : stats.suspicious ? `**Suspicious URL**` : `**Harmless URL**`;
+			stats.malicious > 0
+				? `❗**Malicious URL**❗`
+				: stats.suspicious
+					? `⚠️**Suspicious URL**⚠️`
+					: `👌**Harmless URL**👌`;
 
 		const contentArray: string[] = [
 			`URL: ${data.url}`,
 			`Final URL: ${data.last_final_url}`,
 			"------------------------",
 			`Tags: ${data.tags.join(", ") || "None"}`,
-			`Trackers: ${rawTrackers.join(", ") || "None"}`,
-			"------------------------"
+			`Trackers: ${rawTrackers.join(", ") || "None"}`
 		];
 
 		if (stats.malicious > 0 || stats.suspicious > 0) {
@@ -114,6 +117,7 @@ export default class Scan extends Command {
 				else if (category === "suspicious") suspicious.push(engine);
 			}
 
+			contentArray.push("------------------------");
 			contentArray.push(`Flagged as malicious by: ${malicious.join(", ") || "None"}`);
 			contentArray.push(`Flagged as suspicious by: ${suspicious.join(", ") || "None"}`);
 		}
@@ -125,7 +129,7 @@ export default class Scan extends Command {
 				.setURL(`https://virustotal.com/gui/url/${id}`)
 		);
 
-		const content = `${status}${codeBlock(contentArray.join("\n"))}`;
+		const content = `${status}${codeBlock(contentArray.join("\n"))}\n-# These results may be inaccurate. Always be careful when opening links.`;
 
 		return interaction.editReply({
 			content,
