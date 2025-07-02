@@ -7,7 +7,7 @@ import {
 	ButtonBuilder,
 	ButtonStyle,
 	ChatInputCommandInteraction,
-	EmbedBuilder,
+	codeBlock,
 	inlineCode,
 	InteractionContextType,
 	MessageFlags
@@ -49,36 +49,25 @@ export default class Scan extends Command {
 	}
 
 	async execute(interaction: ChatInputCommandInteraction) {
-		const apiKey = process.env.VIRUSTOTAL_API_KEY;
+		const key = process.env.VIRUSTOTAL_API_KEY;
 
-		if (!apiKey) {
+		if (!key) {
 			return interaction.reply({
 				content: "This command requires the VIRUSTOTAL_API_KEY environment variable."
 			});
 		}
 
-		let url = interaction.options.getString("url", true);
-
-		// Normalize URL to https://
-		if (url.startsWith("http://")) {
-			url = "https://" + url.slice(7);
-		} else if (!url.startsWith("https://")) {
-			url = `https://${url}`;
-		}
-
-		// Base64 encode the URL and remove padding.
-		let encodedUrl = Buffer.from(url).toString("base64").replace(/=+$/, "");
-		const apiUrl = `${VirustotalApiEndpoint}${encodedUrl}`;
+		const parsedUrl = Scan._parseURL(interaction.options.getString("url", true));
 
 		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
 		let result: UrlScanResponse | null = null;
 
 		try {
-			const res = await fetch(apiUrl, {
+			const res = await fetch(`${VirustotalApiEndpoint}${parsedUrl}`, {
 				method: "GET",
 				headers: {
-					"X-Apikey": apiKey,
+					"X-Apikey": key,
 					"Content-Type": "application/json",
 					Accept: "application/json"
 				}
@@ -101,25 +90,20 @@ export default class Scan extends Command {
 
 		const { attributes: data, id } = result.data;
 
-		const trackers = Object.keys(data.trackers ?? {});
+		const rawTrackers = Object.keys(data.trackers ?? {});
 		const stats = data.last_analysis_stats;
 
-		const embed = new EmbedBuilder()
-			.setFields([
-				{ name: "URL", value: inlineCode(data.url), inline: true },
-				{ name: "Final URL", value: inlineCode(data.last_final_url), inline: true },
-				{ name: "Tags", value: inlineCode(data.tags.join("`, `") || "None"), inline: true },
-				{ name: "Trackers", value: inlineCode(trackers.join("`, `") || "None"), inline: true }
-			])
-			.setFooter({ text: "Results may be inaccurate." });
+		const status =
+			stats.malicious > 0 ? `**Malicious URL**` : stats.suspicious ? `**Suspicious URL**` : `**Harmless URL**`;
 
-		if (stats.malicious > 0) {
-			embed.setColor("#FF5A50").setTitle("❗ Malicious");
-		} else if (stats.suspicious > 0) {
-			embed.setColor("#FFED2E").setTitle("⚠️ Suspicious");
-		} else {
-			embed.setColor("#27C6A3").setTitle("✅ Harmless");
-		}
+		const contentArray: string[] = [
+			`URL: ${data.url}`,
+			`Final URL: ${data.last_final_url}`,
+			"------------------------",
+			`Tags: ${data.tags.join(", ") || "None"}`,
+			`Trackers: ${rawTrackers.join(", ") || "None"}`,
+			"------------------------"
+		];
 
 		if (stats.malicious > 0 || stats.suspicious > 0) {
 			const malicious: string[] = [];
@@ -130,32 +114,42 @@ export default class Scan extends Command {
 				else if (category === "suspicious") suspicious.push(engine);
 			}
 
-			if (malicious.length) {
-				embed.addFields({
-					name: "Flagged as Malicious By",
-					value: malicious.map(inlineCode).join(", "),
-					inline: true
-				});
-			}
-
-			if (suspicious.length) {
-				embed.addFields({
-					name: "Flagged as Suspicious By",
-					value: suspicious.map(inlineCode).join(", "),
-					inline: true
-				});
-			}
+			contentArray.push(`Flagged as malicious by: ${malicious.join(", ") || "None"}`);
+			contentArray.push(`Flagged as suspicious by: ${suspicious.join(", ") || "None"}`);
 		}
 
-		const onlineReportUrl = `https://virustotal.com/gui/url/${id}`;
 		const actionRow = new ActionRowBuilder<ButtonBuilder>().setComponents(
-			new ButtonBuilder().setLabel("View Full Report").setStyle(ButtonStyle.Link).setURL(onlineReportUrl)
+			new ButtonBuilder()
+				.setLabel("View Full Report")
+				.setStyle(ButtonStyle.Link)
+				.setURL(`https://virustotal.com/gui/url/${id}`)
 		);
 
+		const content = `${status}${codeBlock(contentArray.join("\n"))}`;
+
 		return interaction.editReply({
-			embeds: [embed],
+			content,
 			components: [actionRow]
 		});
+	}
+
+	/**
+	 * Parse the retrieved URL and make it compatible.
+	 *
+	 * @param url The raw URL.
+	 * @returns The parsed URL.
+	 */
+
+	private static _parseURL(url: string): string {
+		// Normalize URL to https://
+		if (url.startsWith("http://")) {
+			url = "https://" + url.slice(7);
+		} else if (!url.startsWith("https://")) {
+			url = `https://${url}`;
+		}
+
+		// Base64 encode the URL and remove padding.
+		return Buffer.from(url).toString("base64").replace(/=+$/, "");
 	}
 }
 
