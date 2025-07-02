@@ -20,7 +20,7 @@ export default class Snippet extends Command {
 		});
 	}
 
-	override registerAppCommand(): ApplicationCommandData {
+	registerAppCommand(): ApplicationCommandData {
 		return {
 			name: this.name,
 			type: ApplicationCommandType.ChatInput,

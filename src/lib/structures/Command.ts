@@ -66,7 +66,7 @@ export default abstract class Command {
 	 * This method must return an object containing {@link ApplicationCommandData}.
 	 */
 
-	public registerAppCommand?(): ApplicationCommandData;
+	abstract registerAppCommand(): ApplicationCommandData;
 
 	/**
 	 * Handler that is called when the command is executed as an application command.

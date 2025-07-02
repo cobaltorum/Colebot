@@ -17,7 +17,7 @@ export default class UserInfoCtx extends Command {
 		});
 	}
 
-	override registerAppCommand(): ApplicationCommandData {
+	registerAppCommand(): ApplicationCommandData {
 		return {
 			name: this.name,
 			type: ApplicationCommandType.User
