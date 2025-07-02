@@ -94,7 +94,7 @@ export default class Eval extends Command {
 		const output = typeof rawOutput === "string" ? rawOutput : util.inspect(rawOutput, { depth });
 		const id = generateSnowflake();
 
-		await lmdb.put(id, output);
+		await lmdb.put(`eval:${id}`, output);
 
 		const content = error
 			? `**Error**\n${codeBlock("js", output)}\n**Time Taken:** \`${Eval._formatTime(timeTaken)}\``
