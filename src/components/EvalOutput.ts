@@ -10,7 +10,7 @@ export default class DownloadEvalOutput extends Component {
 
 	async execute(interaction: ButtonInteraction) {
 		const id = interaction.customId.split("-")[3];
-		const output = lmdb.get(id);
+		const output = lmdb.get(`eval:${id}`);
 
 		if (!output) {
 			return interaction.reply({
