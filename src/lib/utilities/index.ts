@@ -52,3 +52,30 @@ export async function hastebin(data: any, ext: string = "js"): Promise<string | 
 export function generateSnowflake(): string {
 	return String(SnowflakeUtil.generate({ timestamp: new Date().getTime() }));
 }
+
+/**
+ * Converts a duration in milliseconds to a human-readable string.
+ *
+ * - Uses days, hours, and minutes as units.
+ * - Formats as "{count} {unit}" (e.g., "5 minutes").
+ * - Returns "< 1 minute" if the duration is less than one minute.
+ *
+ * @param ms The duration in milliseconds to format.
+ * @returns A human-readable string representing the duration (e.g., 300000 = "5 minutes").
+ */
+export function formatTime(ms: number): string {
+	const day = 86400000,
+		hour = 3600000,
+		minute = 60000;
+
+	let d = (ms / day) | 0,
+		h = ((ms % day) / hour) | 0,
+		m = ((ms % hour) / minute) | 0;
+
+	if (d)
+		return `${d} ${pluralize(d, "day")}${h ? " " + h + " " + pluralize(h, "hour") : ""}${m ? " " + m + " " + pluralize(m, "minute") : ""}`;
+	if (h) return `${h} ${pluralize(h, "hour")}${m ? " " + m + " " + pluralize(m, "minute") : ""}`;
+	if (m) return `${m} ${pluralize(m, "minute")}`;
+
+	return "< 1 minute";
+}
