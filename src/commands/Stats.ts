@@ -49,7 +49,7 @@ export default class Stats extends Command {
 					inline: true
 				},
 				{
-					name: "Uptime (Client / Proces)",
+					name: "Uptime (Client / Process)",
 					value: `${clientUptime} / ${processUptime}`,
 					inline: true
 				},
