@@ -20,7 +20,7 @@ export default abstract class Component {
 	 * @param id The custom ID of the component.
 	 */
 
-	public constructor(id: CustomID) {
+	constructor(id: CustomID) {
 		this.id = id;
 	}
 
@@ -30,7 +30,7 @@ export default abstract class Component {
 	 * @param interaction The component interaction.
 	 */
 
-	public abstract execute(interaction: ComponentInteraction): Awaitable<unknown>;
+	abstract execute(interaction: ComponentInteraction): Awaitable<unknown>;
 }
 
 export type ComponentInteraction = MessageComponentInteraction | ModalSubmitInteraction;

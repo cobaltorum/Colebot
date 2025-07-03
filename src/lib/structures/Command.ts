@@ -49,7 +49,7 @@ export default abstract class Command {
 	 * @param options The options for the command.
 	 */
 
-	public constructor(options: CommandOptions) {
+	constructor(options: CommandOptions) {
 		const { name, aliases, description, category } = options;
 
 		this.name = name;

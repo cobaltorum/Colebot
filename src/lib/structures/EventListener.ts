@@ -26,7 +26,7 @@ export default abstract class EventListener {
 	 * @param event The event that this listener listens for.
 	 * @param once Whether the event should only be listened for once.
 	 */
-	public constructor(event: Events | string, once?: boolean) {
+	constructor(event: Events | string, once?: boolean) {
 		this.event = event;
 		this.once = once ?? false;
 	}
@@ -36,5 +36,5 @@ export default abstract class EventListener {
 	 *
 	 * @param args The arguments to pass to the event listener.
 	 */
-	public abstract execute(...args: unknown[]): Awaitable<unknown>;
+	abstract execute(...args: unknown[]): Awaitable<unknown>;
 }
