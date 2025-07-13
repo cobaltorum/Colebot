@@ -6,7 +6,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coledotjs/colebot.git"
+    "url": "git+https://github.com/cobaltorum/colebot.git"
   },
   "keywords": [
     "Discord",
@@ -14,13 +14,13 @@
   ],
   "author": {
     "name": "coledotjs",
-    "url": "https://github.com/coledotjs"
+    "url": "https://github.com/cobaltorum"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/coledotjs/colebot/issues"
+    "url": "https://github.com/cobaltorum/colebot/issues"
   },
-  "homepage": "https://github.com/coledotjs/colebot#readme",
+  "homepage": "https://github.com/cobaltorum/colebot#readme",
   "scripts": {
     "start": "node dist/index.js",
     "compile": "tsc && tsc-alias",
